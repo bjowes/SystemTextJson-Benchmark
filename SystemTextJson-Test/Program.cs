@@ -1,4 +1,5 @@
 ﻿using BenchmarkDotNet.Running;
+using System;
 
 namespace JsonTest
 {
@@ -6,8 +7,18 @@ namespace JsonTest
     {
         static void Main(string[] args)
         {
-            var summary = BenchmarkRunner.Run<SerializeCall>();
-            //var summary = BenchmarkRunner.Run<ObjectCreation>();
+            var optionsCreationSummary = BenchmarkRunner.Run<OptionsCreation>();
+            var serializeSingleSummary = BenchmarkRunner.Run<SerializeSingle>();
+            //var serializeListSummary = BenchmarkRunner.Run<SerializeList>();
+            //var serializeOverloadsSummary = BenchmarkRunner.Run<SerializeOverloads>();
+
+            Console.WriteLine();
+            Console.WriteLine("OptionsCreation");
+            Console.Write(optionsCreationSummary);
+
+            Console.WriteLine();
+            Console.WriteLine("SerializeSingle");
+            Console.Write(serializeSingleSummary);
         }
     }
 

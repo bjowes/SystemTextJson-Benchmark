@@ -1,13 +1,11 @@
 ﻿using AutoBogus;
 using BenchmarkDotNet.Attributes;
-using System;
-using System.Collections.Generic;
 using System.Text.Json;
 
 namespace JsonTest
 {
     [ShortRunJob]
-    public class SerializeCall
+    public class SerializeSingle
     {
         private MyObject myObject;
         private static JsonSerializerOptions jsonStaticDefaultOptions = new JsonSerializerOptions();
@@ -15,8 +13,10 @@ namespace JsonTest
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase
         };
+        private JsonSerializerOptions jsonCamelOptions;
+        private JsonSerializerOptions jsonDefaultOptions;
 
-        public SerializeCall()
+        public SerializeSingle()
         {
         }
 
@@ -24,6 +24,11 @@ namespace JsonTest
         public void GlobalSetup()
         {
             myObject = AutoFaker.Generate<MyObject>();
+            jsonCamelOptions = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            };
+            jsonDefaultOptions = new JsonSerializerOptions();
         }
 
 
@@ -40,19 +45,6 @@ namespace JsonTest
         }
 
         [Benchmark]
-        public void Serialize_AltInlineOptions_Default()
-        {
-            JsonSerializer.Serialize(myObject, typeof(MyObject), new JsonSerializerOptions());
-        }
-
-
-        [Benchmark]
-        public void Serialize_Alt2InlineOptions_Default()
-        {
-            JsonSerializer.Serialize<MyObject>(myObject, new JsonSerializerOptions());
-        }
-
-        [Benchmark]
         public void Serialize_InlineOptions_CamelCase()
         {
             JsonSerializer.Serialize(myObject, new JsonSerializerOptions
@@ -62,26 +54,38 @@ namespace JsonTest
         }
 
         [Benchmark]
-        public void Serialize_StaticOptions_Default()
+        public void Serialize_StaticMemberOptions_Default()
         {
             JsonSerializer.Serialize(myObject, jsonStaticDefaultOptions);
         }
 
         [Benchmark]
-        public void Serialize_StaticOptions_CamelCase()
+        public void Serialize_StaticMemberOptions_CamelCase()
         {
             JsonSerializer.Serialize(myObject, jsonStaticCamelOptions);
         }
 
         [Benchmark]
-        public void Serialize_VariableOptions_Default()
+        public void Serialize_MemberOptions_Default()
+        {
+            JsonSerializer.Serialize(myObject, jsonDefaultOptions);
+        }
+
+        [Benchmark]
+        public void Serialize_MemberOptions_CamelCase()
+        {
+            JsonSerializer.Serialize(myObject, jsonCamelOptions);
+        }
+
+        [Benchmark]
+        public void Serialize_LocalOptions_Default()
         {
             var options = new JsonSerializerOptions();
             JsonSerializer.Serialize(myObject, options);
         }
 
         [Benchmark]
-        public void Serialize_VariableOptions_CamelCase()
+        public void Serialize_LocalOptions_CamelCase()
         {
             var options = new JsonSerializerOptions
             {

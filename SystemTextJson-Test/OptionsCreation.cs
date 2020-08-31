@@ -1,25 +1,23 @@
-﻿using AutoBogus;
-using BenchmarkDotNet.Attributes;
+﻿using BenchmarkDotNet.Attributes;
 using System;
-using System.Collections.Generic;
 using System.Text.Json;
 
 namespace JsonTest
 {
     [ShortRunJob]
-    public class ObjectCreation
+    public class OptionsCreation
     {
         private JsonSerializerOptions jsonOptions;
-        private MyObject myObject2;
+        private MyObject myObject;
 
-        public ObjectCreation()
+        public OptionsCreation()
         {
         }
 
         public void UseEm()
         {
             Console.WriteLine(jsonOptions);
-            Console.WriteLine(myObject2);
+            Console.WriteLine(myObject);
         }
 
         [Benchmark]
@@ -30,7 +28,7 @@ namespace JsonTest
         [Benchmark]
         public void CreateMyObject()
         {
-            myObject2 = new MyObject();
+            myObject = new MyObject();
         }
 
         [Benchmark]

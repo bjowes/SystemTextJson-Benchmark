@@ -1,13 +1,12 @@
 ﻿using AutoBogus;
 using BenchmarkDotNet.Attributes;
-using System;
 using System.Collections.Generic;
 using System.Text.Json;
 
 namespace JsonTest
 {
     [ShortRunJob]
-    public class SerializeListCall
+    public class SerializeList
     {
         [Params(10, 100, 1000, 10000)]
         public int N { get; set; }
@@ -19,7 +18,7 @@ namespace JsonTest
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase
         };
 
-        public SerializeListCall()
+        public SerializeList()
         {
         }
 
