@@ -4,7 +4,7 @@ using System.Text.Json;
 
 namespace JsonTest
 {
-    [ShortRunJob]
+    //[ShortRunJob]
     public class OptionsCreation
     {
         private JsonSerializerOptions jsonOptions;

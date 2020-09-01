@@ -6,7 +6,7 @@ using System.Text.Json;
 namespace JsonTest
 {
     //[ShortRunJob]
-    public class SerializeList
+    public class SerializeEach
     {
         [Params(10, 100, 1000)]
         public int N { get; set; }
@@ -18,7 +18,7 @@ namespace JsonTest
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase
         };
 
-        public SerializeList()
+        public SerializeEach()
         {
         }
 
@@ -31,34 +31,49 @@ namespace JsonTest
         [Benchmark]
         public void Serialize()
         {
-            JsonSerializer.Serialize(myObjects);
+            foreach (var o in myObjects)
+            {
+                JsonSerializer.Serialize(o);
+            }
         }
 
         [Benchmark]
         public void Serialize_InlineOptions_Default()
         {
-            JsonSerializer.Serialize(myObjects, new JsonSerializerOptions ());
+            foreach (var o in myObjects)
+            {
+                JsonSerializer.Serialize(o, new JsonSerializerOptions());
+            }
         }
 
         [Benchmark]
         public void Serialize_InlineOptions_CamelCase()
         {
-            JsonSerializer.Serialize(myObjects, new JsonSerializerOptions
+            foreach (var o in myObjects)
             {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-            });
+                JsonSerializer.Serialize(o, new JsonSerializerOptions
+                {
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                });
+            }
         }
 
         [Benchmark]
         public void Serialize_StaticOptions_Default()
         {
-            JsonSerializer.Serialize(myObjects, jsonStaticDefaultOptions);
+            foreach (var o in myObjects)
+            {
+                JsonSerializer.Serialize(o, jsonStaticDefaultOptions);
+            }
         }
 
         [Benchmark]
         public void Serialize_StaticOptions_CamelCase()
         {
-            JsonSerializer.Serialize(myObjects, jsonStaticCamelOptions);
+            foreach (var o in myObjects)
+            {
+                JsonSerializer.Serialize(o, jsonStaticCamelOptions);
+            }
         }
     }
 }
